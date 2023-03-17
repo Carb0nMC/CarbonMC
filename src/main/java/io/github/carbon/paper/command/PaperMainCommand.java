@@ -8,12 +8,12 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-public class MainCommand implements CommandExecutor {
+public class PaperMainCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
         if(args.length == 0){
             String prefix = PluginServiceProvider.getCarbonMC().getPrefix();
-            commandSender.sendMessage(prefix + "§cBitte gib einen Subcommand an!");
+            commandSender.sendMessage(prefix + "§cPlease use /carbon <command>");
             return false;
         }
 
