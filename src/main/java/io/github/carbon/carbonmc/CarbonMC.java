@@ -9,11 +9,19 @@ public interface CarbonMC {
 
     Logger getLogger();
 
-    default String getPrefix(){
-        return "§8[§6Carbon§8] §r";
+    default boolean isBungee() {
+        return false;
     }
 
-    default void register(){
-        getCommandManager().registerCommands("io.github.carbon.carbonmc.command");
+    default String getPrefix(){
+        return "§8[§6CarbonMC§8] §r";
+    }
+
+    default String getVersion(){
+        return "1.0.0";
+    }
+
+    default String getAuthor(){
+        return "CarbonMC";
     }
 }
