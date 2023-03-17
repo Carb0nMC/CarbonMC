@@ -25,7 +25,7 @@ public class CommandManager {
                     String commandName = carbonCommand.value();
                     ICommand commandInstance = (ICommand) command.newInstance();
 
-                    PluginServiceProvider.getCarbonMC().getLogger().info("Registering command: " + commandName);
+                    PluginServiceProvider.getCarbonMC().getLogger().info("§eRegistering command: §3" + commandName);
                     this.commands.put(commandName, commandInstance);
                 }
             } catch (Exception e){
