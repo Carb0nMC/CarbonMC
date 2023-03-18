@@ -7,6 +7,7 @@ public class PluginServiceProvider {
 
     public PluginServiceProvider(CarbonMC carbonMC) {
         PluginServiceProvider.carbonMC = carbonMC;
+
         Logger logger = carbonMC.getLogger();
 
         String asci =
