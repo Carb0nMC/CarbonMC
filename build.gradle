@@ -31,6 +31,7 @@ repositories {
 }
 
 dependencies {
+    implementation("net.dv8tion:JDA:5.0.0-beta.6")
     implementation(group: 'org.reflections', name: 'reflections', version: '0.9.10')
 
     compileOnly("io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT")
