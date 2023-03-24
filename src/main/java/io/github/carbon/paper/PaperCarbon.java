@@ -4,6 +4,7 @@ import io.github.carbon.carbonmc.CarbonMC;
 import io.github.carbon.carbonmc.PluginServiceProvider;
 import io.github.carbon.carbonmc.command.CommandManager;
 import io.github.carbon.carbonmc.utils.file.FileManager;
+import io.github.carbon.paper.command.PaperMainCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Logger;
@@ -17,6 +18,9 @@ public class PaperCarbon extends JavaPlugin implements CarbonMC{
         new PluginServiceProvider(this);
         this.commandManager = new CommandManager();
         this.fileManager = new FileManager();
+
+        getCommand("carbon").setExecutor(new PaperMainCommand());
+        getCommand("carbon").setTabCompleter(new PaperMainCommand());
     }
 
     @Override

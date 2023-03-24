@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import io.github.carbon.carbonmc.utils.Setting;
 
 import java.io.File;
 import java.io.FileReader;
@@ -20,24 +21,43 @@ public class FileManager {
 
         try{
             if(!FOLDER.exists()) FOLDER.mkdirs();
-            if(!configFile.exists()) configFile.createNewFile();
+            if(!configFile.exists()) {
+                configFile.createNewFile();
 
-            FileWriter writer = new FileWriter(configFile);
-            writer.write("{}");
-            writer.flush();
-            writer.close();
+                FileWriter writer = new FileWriter(configFile);
+                writer.write("{}");
+                writer.flush();
+                writer.close();
+            }
         } catch (Exception e){
             e.printStackTrace();
         }
 
     }
 
-    public JsonObject getValue(String key){
+    public void regenerateConfig(){
+
+    }
+
+    public Object getValue(String key){
         try{
             JsonParser parser = new JsonParser();
             JsonObject object = (JsonObject) parser.parse(new FileReader(configFile)).getAsJsonObject();
 
-            return object.has(key) ? object.getAsJsonObject(key) : null;
+            if(!object.has(key) || object.get(key).isJsonNull() || object == null){
+                boolean isSetting = Setting.getByPath(key) != null;
+
+                if(isSetting){
+                    Object defaultValue = Setting.getByPath(key).getDefaultValue();
+                    set(key, defaultValue);
+                } else {
+                    set(key, "N/A");
+                }
+
+                return getValue(key);
+            }
+
+            return object.getAsJsonObject().get(key);
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -45,18 +65,41 @@ public class FileManager {
         return null;
     }
 
-    public void set(String key, String value){
+    public void set(String key, Object value){
         try{
             JsonParser parser = new JsonParser();
             JsonElement element = parser.parse(new FileReader(configFile));
             JsonObject object = element.getAsJsonObject();
 
-            object.addProperty(key, value);
+            if (value instanceof Boolean) {
+                object.addProperty(key, (Boolean) value);
+            } else if (value instanceof Number) {
+                object.addProperty(key, (Number) value);
+            } else if (value instanceof String) {
+                object.addProperty(key, (String) value);
+            } else {
+                object.addProperty(key, value.toString());
+            }
             FileWriter writer = new FileWriter(configFile);
             gson.toJson(object, writer);
             writer.close();
         } catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public void set(Setting setting, boolean value){
+        String key = setting.getPath();
+        set(key, Boolean.valueOf(value).toString());
+    }
+
+    public boolean getBoolSetting(Setting setting){
+        String key = setting.getPath();
+        return ((JsonElement) getValue(key)).getAsBoolean();
+    }
+
+    public String getStringSetting(Setting setting){
+        String key = setting.getPath();
+        return ((JsonElement) getValue(key)).getAsString();
     }
 }

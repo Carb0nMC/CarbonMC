@@ -1,6 +1,7 @@
 package io.github.carbon.bungeecord;
 
 import io.github.carbon.bungeecord.command.BungeeMainCommand;
+import io.github.carbon.bungeecord.event.Eventlistener;
 import io.github.carbon.carbonmc.CarbonMC;
 import io.github.carbon.carbonmc.PluginServiceProvider;
 import io.github.carbon.carbonmc.command.CommandManager;
@@ -18,6 +19,7 @@ public class BungeeCarbon extends Plugin implements CarbonMC {
         this.fileManager = new FileManager();
 
         getProxy().getPluginManager().registerCommand(this, new BungeeMainCommand());
+        getProxy().getPluginManager().registerListener(this, new Eventlistener());
     }
 
     @Override

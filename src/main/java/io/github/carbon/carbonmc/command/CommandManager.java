@@ -4,8 +4,10 @@ import io.github.carbon.carbonmc.PluginServiceProvider;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class CommandManager {
     private HashMap<String, ICommand> commands = new HashMap<>();
@@ -48,7 +50,8 @@ public class CommandManager {
         boolean success = command.execute(context);
 
         if(!success){
-            String message = "§e---------------------§r[§bCarbonMC§r]§e---------------------\n" +
+            String message = "\n" +
+                    "§e---------------------§r[§bCarbonMC§r]§e---------------------\n" +
                     "§eUsage: §r" + command.getUsage() + "\n" +
                     "§eDescription: §r" + command.getDescription() + "\n" +
                     "§e----------------------------------------------------";
@@ -56,5 +59,28 @@ public class CommandManager {
         }
 
         return true;
+    }
+
+    public ArrayList<String> getCompletions(int position, String commandName){
+        ICommand command = this.getCommandByName(commandName);
+
+        ArrayList<String> toReturn = new ArrayList<>();
+
+        if(position == 0){
+            this.commands.forEach((name, command1) -> toReturn.add(name));
+            return toReturn;
+        }
+
+        if (command == null) return null;
+
+        List<CommandArgument> arguments = command.getArguments();
+        command.getArguments().forEach(argument -> {
+            if(argument.getPosition() == position){
+                CommandArgument argumentAtPosition = argument;
+                toReturn.addAll(argumentAtPosition.getValues());
+            }
+        });
+
+        return toReturn;
     }
 }
