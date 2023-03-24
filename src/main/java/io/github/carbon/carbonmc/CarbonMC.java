@@ -1,11 +1,13 @@
 package io.github.carbon.carbonmc;
 
 import io.github.carbon.carbonmc.command.CommandManager;
+import io.github.carbon.carbonmc.utils.file.FileManager;
 
 import java.util.logging.Logger;
 
 public interface CarbonMC {
     CommandManager getCommandManager();
+    FileManager getFileManager();
 
     Logger getLogger();
 
