@@ -2,7 +2,8 @@ package io.github.carbon.carbonmc.utils;
 
 public enum Setting {
     MAINTENANCE_MODE("Wartungsmodus", "maintenance_mode", false),
-    MAINTENANCE_MESSAGE("Wartungsmodus Nachricht", "maintenance_mode_message", "§e§lCarbonMC §7>> §cDer Server ist im Wartungsmodus!");
+    MAINTENANCE_MESSAGE("Wartungsmodus Nachricht", "maintenance_mode_message", "§e§lCarbonMC §7>> §cDer Server ist im Wartungsmodus!"),
+    START_DC_BOT("Discord Bot starten", "start_discord_bot", false);
 
     private String name;
     private String path;
