@@ -36,7 +36,17 @@ public class FileManager {
     }
 
     public void regenerateConfig(){
+        try{
+            configFile.delete();
+            configFile.createNewFile();
 
+            FileWriter writer = new FileWriter(configFile);
+            writer.write("{}");
+            writer.flush();
+            writer.close();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public Object getValue(String key){

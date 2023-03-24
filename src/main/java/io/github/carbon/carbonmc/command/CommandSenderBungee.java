@@ -1,5 +1,6 @@
 package io.github.carbon.carbonmc.command;
 
+import io.github.carbon.carbonmc.PluginServiceProvider;
 import net.md_5.bungee.api.CommandSender;
 
 public class CommandSenderBungee implements ICommandSender {
@@ -16,6 +17,6 @@ public class CommandSenderBungee implements ICommandSender {
 
     @Override
     public void sendMessage(String message) {
-        commandSender.sendMessage(message);
+        commandSender.sendMessage(PluginServiceProvider.getCarbonMC().getPrefix() + message);
     }
 }
