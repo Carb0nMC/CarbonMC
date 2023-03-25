@@ -5,8 +5,8 @@ import io.github.carbon.carbonmc.command.CarbonCommand;
 import io.github.carbon.carbonmc.command.CommandArgument;
 import io.github.carbon.carbonmc.command.CommandContext;
 import io.github.carbon.carbonmc.command.ICommand;
-import io.github.carbon.carbonmc.utils.Setting;
-import io.github.carbon.carbonmc.utils.file.FileManager;
+import io.github.carbon.carbonmc.utils.DatabaseUtil;
+import io.github.carbon.carbonmc.utils.Settings;
 
 import java.util.Arrays;
 import java.util.List;
@@ -53,8 +53,8 @@ public class MaintenanceCommand implements ICommand {
         }
         boolean newMode = context.getArgs()[0].equalsIgnoreCase("on");
 
-        FileManager fileManager = PluginServiceProvider.getCarbonMC().getFileManager();
-        fileManager.set(Setting.MAINTENANCE_MODE, newMode);
+        DatabaseUtil databaseUtil = PluginServiceProvider.getCarbonMC().getDatabaseUtil();
+        databaseUtil.updateSettings(Settings.MAINTENANCE_MODE, newMode);
 
         String message = "§eDer Wartungsmodus wurde " + (newMode ? "§aaktiviert" : "§cdeaktiviert") + "§e.";
         context.getCommandSender().sendMessage(message);
