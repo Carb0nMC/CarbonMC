@@ -31,7 +31,7 @@ public class BungeeCarbon extends Plugin implements CarbonMC {
         if(fileManager.getBoolSetting(Setting.START_DC_BOT)) {
             try {
                 PluginServiceProvider.getCarbonMC().getLogger().warning("Starting Discord Bot...");
-                JsonObject object = new JsonParser().parse(new FileReader("/Users/lexseifert/IdeaProjects/CarbonMC/discord.json")).getAsJsonObject();
+                JsonObject object = new JsonParser().parse(new FileReader("/root/mcserver/waterfall/plugins/carbonmc/discord.json")).getAsJsonObject();
                 String token = object.get("token").getAsString();
                 String prefix = object.get("prefix").getAsString();
                 this.discordBot = new DiscordBot(token, prefix);
