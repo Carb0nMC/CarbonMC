@@ -1,4 +1,4 @@
-package io.github.carbon.carbonmc.utils;
+package io.github.carbon.carbonmc.utils.setting;
 
 public class Setting {
     private String id;

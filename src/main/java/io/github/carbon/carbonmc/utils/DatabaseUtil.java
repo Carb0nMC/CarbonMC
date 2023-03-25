@@ -3,6 +3,8 @@ package io.github.carbon.carbonmc.utils;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.github.carbon.carbonmc.PluginServiceProvider;
+import io.github.carbon.carbonmc.utils.setting.Setting;
+import io.github.carbon.carbonmc.utils.setting.Settings;
 
 import java.io.FileReader;
 import java.sql.*;

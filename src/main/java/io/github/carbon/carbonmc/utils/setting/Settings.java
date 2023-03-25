@@ -1,4 +1,4 @@
-package io.github.carbon.carbonmc.utils;
+package io.github.carbon.carbonmc.utils.setting;
 
 public enum Settings {
     MAINTENANCE_MODE("maintenance_mode", false);

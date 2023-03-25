@@ -5,8 +5,8 @@ import io.github.carbon.carbonmc.command.CarbonCommand;
 import io.github.carbon.carbonmc.command.CommandContext;
 import io.github.carbon.carbonmc.command.ICommand;
 import io.github.carbon.carbonmc.utils.DatabaseUtil;
-import io.github.carbon.carbonmc.utils.Setting;
-import io.github.carbon.carbonmc.utils.Settings;
+import io.github.carbon.carbonmc.utils.setting.Setting;
+import io.github.carbon.carbonmc.utils.setting.Settings;
 
 @CarbonCommand("test")
 public class TestCommand implements ICommand {

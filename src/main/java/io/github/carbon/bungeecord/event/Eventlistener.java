@@ -2,7 +2,7 @@ package io.github.carbon.bungeecord.event;
 
 import io.github.carbon.carbonmc.PluginServiceProvider;
 import io.github.carbon.carbonmc.utils.DatabaseUtil;
-import io.github.carbon.carbonmc.utils.Settings;
+import io.github.carbon.carbonmc.utils.setting.Settings;
 import net.md_5.bungee.api.ServerPing;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PostLoginEvent;

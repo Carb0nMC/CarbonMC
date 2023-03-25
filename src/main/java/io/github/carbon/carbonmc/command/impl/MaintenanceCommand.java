@@ -6,7 +6,7 @@ import io.github.carbon.carbonmc.command.CommandArgument;
 import io.github.carbon.carbonmc.command.CommandContext;
 import io.github.carbon.carbonmc.command.ICommand;
 import io.github.carbon.carbonmc.utils.DatabaseUtil;
-import io.github.carbon.carbonmc.utils.Settings;
+import io.github.carbon.carbonmc.utils.setting.Settings;
 
 import java.util.Arrays;
 import java.util.List;
