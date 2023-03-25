@@ -2,6 +2,7 @@ package io.github.carbon.bungeecord.event;
 
 import io.github.carbon.carbonmc.PluginServiceProvider;
 import io.github.carbon.carbonmc.utils.DatabaseUtil;
+import io.github.carbon.carbonmc.utils.messages.Messages;
 import io.github.carbon.carbonmc.utils.setting.Settings;
 import net.md_5.bungee.api.ServerPing;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -18,7 +19,7 @@ public class Eventlistener implements Listener {
         DatabaseUtil databaseUtil = PluginServiceProvider.getCarbonMC().getDatabaseUtil();
         boolean maintenanceMode = databaseUtil.getSetting(Settings.MAINTENANCE_MODE).getValue();
         if(maintenanceMode){
-            String message = "§c§lWartungsarbeiten";
+            String message = databaseUtil.getMessage(Messages.MAINTENANCE_MODE).getValue();
             response.setDescription(message);
             response.setVersion(new ServerPing.Protocol("§c§lWartungsarbeiten", 0));
             response.setPlayers(new ServerPing.Players(0, 0, null));

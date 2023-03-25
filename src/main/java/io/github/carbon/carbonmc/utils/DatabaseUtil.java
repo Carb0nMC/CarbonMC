@@ -3,6 +3,8 @@ package io.github.carbon.carbonmc.utils;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.github.carbon.carbonmc.PluginServiceProvider;
+import io.github.carbon.carbonmc.utils.messages.Message;
+import io.github.carbon.carbonmc.utils.messages.Messages;
 import io.github.carbon.carbonmc.utils.setting.Setting;
 import io.github.carbon.carbonmc.utils.setting.Settings;
 
@@ -25,8 +27,17 @@ public class DatabaseUtil {
             this.connection = DriverManager.getConnection(url, username, password);
             PluginServiceProvider.getCarbonMC().getLogger().info("Connected to database! Checking tables...");
 
-            Statement statement = this.connection.createStatement();
-            String sql = "CREATE TABLE IF NOT EXISTS settings(id varchar(100) primary key, value bool)";
+            initTable("CREATE TABLE IF NOT EXISTS settings(id varchar(100) primary key, value bool)");
+            initTable("CREATE TABLE IF NOT EXISTS messages(id varchar(100) primary key, value text)");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void initTable(String sql){
+        try{
+            Statement statement = getConnection().createStatement();
             statement.execute(sql);
             statement.close();
         } catch (Exception e) {
@@ -108,6 +119,53 @@ public class DatabaseUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
+    public Message getMessage(Messages messages){
+        String messageID = messages.getId();
+
+        try{
+            PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM messages WHERE id = ?");
+            statement.setString(1, messageID);
+            ResultSet results = statement.executeQuery();
+
+            if(results.next()){
+                String value = results.getString("value");
+                Message message = new Message(messageID, value);
+                statement.close();
+
+                return message;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try{
+            PreparedStatement statement = getConnection().prepareStatement("INSERT INTO messages(id, value) VALUES (?, ?)");
+            statement.setString(1, messageID);
+            statement.setString(2, messages.getDefaultMessage());
+
+            statement.executeUpdate();
+            statement.close();
+
+            return new Message(messageID, messages.getDefaultMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new Message(messageID, messages.getDefaultMessage());
+    }
+
+    public void updateMessage(Messages messages, String value){
+        try{
+            PreparedStatement statement = getConnection().prepareStatement("UPDATE messages SET value = ? WHERE id = ?");
+            statement.setString(1, value);
+            statement.setString(2, messages.getId());
+
+            statement.executeUpdate();
+            statement.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
