@@ -5,8 +5,13 @@ import io.github.carbon.carbonmc.PluginServiceProvider;
 import io.github.carbon.carbonmc.command.CommandManager;
 import io.github.carbon.carbonmc.utils.DatabaseUtil;
 import io.github.carbon.paper.command.PaperMainCommand;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.ArrayList;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 public class PaperCarbon extends JavaPlugin implements CarbonMC{
@@ -35,5 +40,29 @@ public class PaperCarbon extends JavaPlugin implements CarbonMC{
     @Override
     public DatabaseUtil getDatabaseUtil() {
         return databaseUtil;
+    }
+
+    @Override
+    public ArrayList<String> getOnlinePlayerNames() {
+        return new ArrayList<>(Bukkit.getOnlinePlayers().stream().map(Player::getName).toList());
+    }
+
+    @Override
+    public UUID getPlayerUUID(String playerName) {
+        Player player = Bukkit.getPlayer(playerName);
+
+        if(player == null) return null;
+
+        return player.getUniqueId();
+    }
+
+    @Override
+    public void setPermission(String playerName, String permission, boolean value) {
+        Player player = Bukkit.getPlayer(playerName);
+
+        if(player == null) return;
+
+        PermissionAttachment attachment = player.addAttachment(this);
+        attachment.setPermission(permission, value);
     }
 }

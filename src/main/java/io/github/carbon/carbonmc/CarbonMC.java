@@ -3,6 +3,8 @@ package io.github.carbon.carbonmc;
 import io.github.carbon.carbonmc.command.CommandManager;
 import io.github.carbon.carbonmc.utils.DatabaseUtil;
 
+import java.util.ArrayList;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 public interface CarbonMC {
@@ -26,4 +28,10 @@ public interface CarbonMC {
     default String getAuthor(){
         return "CarbonMC";
     }
+
+    ArrayList<String> getOnlinePlayerNames();
+
+    UUID getPlayerUUID(String playerName);
+
+    void setPermission(String playerName, String permission, boolean value);
 }

@@ -5,11 +5,14 @@ import com.google.gson.JsonParser;
 import io.github.carbon.carbonmc.PluginServiceProvider;
 import io.github.carbon.carbonmc.utils.messages.Message;
 import io.github.carbon.carbonmc.utils.messages.Messages;
+import io.github.carbon.carbonmc.utils.permission.UserPermissionTable;
 import io.github.carbon.carbonmc.utils.setting.Setting;
 import io.github.carbon.carbonmc.utils.setting.Settings;
 
 import java.io.FileReader;
 import java.sql.*;
+import java.util.HashMap;
+import java.util.UUID;
 
 public class DatabaseUtil {
     private Connection connection;
@@ -29,6 +32,7 @@ public class DatabaseUtil {
 
             initTable("CREATE TABLE IF NOT EXISTS settings(id varchar(100) primary key, value bool)");
             initTable("CREATE TABLE IF NOT EXISTS messages(id varchar(100) primary key, value text)");
+            initTable("CREATE TABLE IF NOT EXISTS permissions(id varchar(100) primary key, permission text, value bool)");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -51,7 +55,6 @@ public class DatabaseUtil {
         }
 
         try {
-
             JsonObject object = new JsonParser().parse(new FileReader("/root/mcserver/waterfall/plugins/carbonmc/database.json")).getAsJsonObject();
 
             String host = object.get("host").getAsString();
@@ -161,6 +164,61 @@ public class DatabaseUtil {
             PreparedStatement statement = getConnection().prepareStatement("UPDATE messages SET value = ? WHERE id = ?");
             statement.setString(1, value);
             statement.setString(2, messages.getId());
+
+            statement.executeUpdate();
+            statement.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public UserPermissionTable getPermissions(UUID uuid){
+        try{
+            PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM permissions WHERE id = ?");
+            statement.setString(1, uuid.toString());
+
+            ResultSet results = statement.executeQuery();
+
+            HashMap<String, Boolean> permissionMap = new HashMap<>();
+            while (results.next()){
+                String key = results.getString("permission");
+                boolean value = results.getBoolean("value");
+                permissionMap.put(key, value);
+            }
+
+            statement.close();
+
+            UserPermissionTable table = new UserPermissionTable(uuid, permissionMap);
+            return table;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //Should never happen
+        return new UserPermissionTable(uuid, new HashMap<>());
+    }
+
+    public void setPermission(UUID user, String permission, boolean value){
+        try{
+            UserPermissionTable permissions = getPermissions(user);
+            if(!permissions.getPermissions().containsKey(permission)){
+                PluginServiceProvider.getCarbonMC().getLogger().severe("Permission is not set, defaulting to false first");
+
+                PreparedStatement statement = getConnection().prepareStatement("INSERT INTO permissions(id, permission, value) VALUES (?, ?, ?)");
+                statement.setString(1, user.toString());
+                statement.setString(2, permission);
+                statement.setBoolean(3, false);
+
+                statement.executeUpdate();
+                statement.close();
+
+                PluginServiceProvider.getCarbonMC().getLogger().severe("Default Set, retrying...");
+            }
+
+            PreparedStatement statement = getConnection().prepareStatement("UPDATE permissions SET value = ? WHERE id = ? AND permission = ?");
+            statement.setBoolean(1, value);
+            statement.setString(2, user.toString());
+            statement.setString(3, permission);
 
             statement.executeUpdate();
             statement.close();

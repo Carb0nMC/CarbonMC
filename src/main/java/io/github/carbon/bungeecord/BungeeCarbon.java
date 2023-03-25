@@ -7,7 +7,11 @@ import io.github.carbon.carbonmc.PluginServiceProvider;
 import io.github.carbon.carbonmc.command.CommandManager;
 import io.github.carbon.carbonmc.utils.DatabaseUtil;
 import io.github.carbon.discord.DiscordBot;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
+
+import java.util.ArrayList;
+import java.util.UUID;
 
 
 public class BungeeCarbon extends Plugin implements CarbonMC {
@@ -53,5 +57,28 @@ public class BungeeCarbon extends Plugin implements CarbonMC {
     @Override
     public DatabaseUtil getDatabaseUtil() {
         return databaseUtil;
+    }
+
+    @Override
+    public ArrayList<String> getOnlinePlayerNames() {
+        return new ArrayList<>(getProxy().getPlayers().stream().map(ProxiedPlayer::getName).toList());
+    }
+
+    @Override
+    public UUID getPlayerUUID(String playerName) {
+        ProxiedPlayer player = getProxy().getPlayer(playerName);
+
+        if(player == null) return null;
+
+        return player.getUniqueId();
+    }
+
+    @Override
+    public void setPermission(String playerName, String permission, boolean value) {
+        ProxiedPlayer player = getProxy().getPlayer(playerName);
+
+        if(player == null) return;
+
+        player.setPermission(permission, value);
     }
 }

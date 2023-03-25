@@ -1,7 +1,5 @@
 package io.github.carbon.carbonmc.command;
 
-import io.github.carbon.carbonmc.CarbonMC;
-import io.github.carbon.carbonmc.PluginServiceProvider;
 import org.bukkit.command.CommandSender;
 
 public class CommandSenderPaper implements ICommandSender {
@@ -18,7 +16,12 @@ public class CommandSenderPaper implements ICommandSender {
     }
 
     @Override
+    public boolean hasPermission(String permission) {
+        return commandSender.hasPermission(permission);
+    }
+
+    @Override
     public void sendMessage(String message) {
-        commandSender.sendMessage(PluginServiceProvider.getCarbonMC().getPrefix() + message);
+        commandSender.sendMessage(message);
     }
 }

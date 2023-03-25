@@ -57,7 +57,7 @@ public class MaintenanceCommand implements ICommand {
         databaseUtil.updateSettings(Settings.MAINTENANCE_MODE, newMode);
 
         String message = "§eDer Wartungsmodus wurde " + (newMode ? "§aaktiviert" : "§cdeaktiviert") + "§e.";
-        context.getCommandSender().sendMessage(message);
+        context.getCommandSender().sendMessage(PluginServiceProvider.getCarbonMC().getPrefix() + message);
         return true;
     }
 }

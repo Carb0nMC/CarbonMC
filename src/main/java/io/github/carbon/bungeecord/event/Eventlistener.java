@@ -35,14 +35,8 @@ public class Eventlistener implements Listener {
         boolean maintenanceMode = databaseUtil.getSetting(Settings.MAINTENANCE_MODE).getValue();
 
         if(!player.hasPermission(permission) && maintenanceMode){
-            event.getPlayer().disconnect("" +
-                    "§c§lWartungsarbeiten\n" +
-                    "\n" +
-                    "§7Der Server befindet sich derzeit im Wartungsmodus.\n" +
-                    "§7Bitte versuche es später noch einmal.\n" +
-                    "\n" +
-                    "§7§oDieser Server wird von CarbonMC betrieben.\n" +
-                    "§e§ohttps://www.carbonmc.net");
+            String message = databaseUtil.getMessage(Messages.MAINTENANCE_MODE_KICK).getValue();
+            event.getPlayer().disconnect(message);
         }
     }
 }

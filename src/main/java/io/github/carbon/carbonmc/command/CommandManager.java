@@ -46,6 +46,11 @@ public class CommandManager {
         ICommand command = this.getCommandByName(commandName);
         if(command == null) return false;
 
+        if(!sender.hasPermission(command.getPermission())){
+            sender.sendMessage(PluginServiceProvider.getCarbonMC().getPrefix() + "§cDu hast keine Berechtigung diesen Befehl auszuführen!");
+            return true;
+        }
+
         CommandContext context = new CommandContext(sender, commandArgs, commandName);
         boolean success = command.execute(context);
 
