@@ -2,6 +2,7 @@ package io.github.carbon.discord.command;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -48,8 +49,8 @@ public class DCommandContext {
         }
     }
 
-    public MessageChannelUnion getChannel(){
-        return event.getChannel();
+    public TextChannel getChannel(){
+        return event.getChannel().asTextChannel();
     }
 
     public Message getMessage(){
@@ -139,7 +140,7 @@ public class DCommandContext {
         }
     }
 
-public void replyEmbed(String title, String description, Color color, boolean delete, int time, TimeUnit unit){
+    public void replyEmbed(String title, String description, Color color, boolean delete, int time, TimeUnit unit){
         EmbedBuilder builder = new EmbedBuilder();
         builder.setTitle(title);
         builder.setDescription(description);

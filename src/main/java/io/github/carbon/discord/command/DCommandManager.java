@@ -1,6 +1,7 @@
 package io.github.carbon.discord.command;
 
 import io.github.carbon.discord.DiscordBot;
+import io.github.carbon.discord.command.impl.ClearCommand;
 import io.github.carbon.discord.command.impl.PingCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -16,6 +17,7 @@ public class DCommandManager {
         this.commands = new ArrayList<>();
 
         addCommand(new PingCommand());
+        addCommand(new ClearCommand());
     }
 
     public void addCommand(DiscordCommand command){
