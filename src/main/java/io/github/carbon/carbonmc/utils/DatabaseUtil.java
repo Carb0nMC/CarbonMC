@@ -6,6 +6,7 @@ import io.github.carbon.carbonmc.CarbonMC;
 import io.github.carbon.carbonmc.utils.messages.Message;
 import io.github.carbon.carbonmc.utils.messages.Messages;
 import io.github.carbon.carbonmc.utils.permission.UserPermissionTable;
+import io.github.carbon.carbonmc.utils.playerstats.PlayerStats;
 import io.github.carbon.carbonmc.utils.setting.Setting;
 import io.github.carbon.carbonmc.utils.setting.Settings;
 
@@ -33,6 +34,7 @@ public class DatabaseUtil {
             initTable("CREATE TABLE IF NOT EXISTS settings(id varchar(100) primary key, value bool)");
             initTable("CREATE TABLE IF NOT EXISTS messages(id varchar(100) primary key, value text)");
             initTable("CREATE TABLE IF NOT EXISTS permissions(id varchar(100), permission text, value bool)");
+            initTable("CREATE TABLE IF NOT EXISTS playerstats(uuid varchar(100) primary key, coins int, lastlogin bigint, kills int, deaths int, blocksbroken int, blocksplaced int, mobskilled int, playerskilled int, timeskicked int, timesbanned int, timesmuted int)");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -245,5 +247,79 @@ public class DatabaseUtil {
         permissions.forEach((permission, value) -> {
             carbonMC.setPermission(uuid, permission, value);
         });
+    }
+
+    public PlayerStats getPlayerStats(UUID uuid){
+        try{
+            PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM playerstats WHERE uuid = ?");
+            statement.setString(1, uuid.toString());
+            ResultSet results = statement.executeQuery();
+
+            if(results.next()){
+                int coins = results.getInt("coins");
+                long lastLogin = results.getLong("lastlogin");
+                int kills = results.getInt("kills");
+                int deaths = results.getInt("deaths");
+                int blocksbroken = results.getInt("blocksbroken");
+                int blocksplaced = results.getInt("blocksplaced");
+                int mobskilled = results.getInt("mobskilled");
+                int playerskilled = results.getInt("playerskilled");
+                int timeskicked = results.getInt("timeskicked");
+                int timesbanned = results.getInt("timesbanned");
+                int timesmuted = results.getInt("timesmuted");
+
+                PlayerStats stats = new PlayerStats(uuid, coins, lastLogin, kills, deaths, blocksbroken, blocksplaced, mobskilled, playerskilled, timeskicked, timesbanned, timesmuted);
+                statement.close();
+                return stats;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try{
+            PreparedStatement statement = getConnection().prepareStatement("INSERT INTO playerstats(uuid, coins, lastlogin, kills, deaths, blocksbroken, blocksplaced, mobskilled, playerskilled, timeskicked, timesbanned, timesmuted) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
+            statement.setString(1, uuid.toString());
+            statement.setInt(2, 0);
+            statement.setLong(3, System.currentTimeMillis());
+            statement.setInt(4, 0);
+            statement.setInt(5, 0);
+            statement.setInt(6, 0);
+            statement.setInt(7, 0);
+            statement.setInt(8, 0);
+            statement.setInt(9, 0);
+            statement.setInt(10, 0);
+            statement.setInt(11, 0);
+            statement.setInt(12, 0);
+
+            statement.executeUpdate();
+            statement.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new PlayerStats(uuid, 0, System.currentTimeMillis(), 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    }
+
+    public void updatePlayerStats(PlayerStats stats){
+        try{
+            PreparedStatement statement = getConnection().prepareStatement("UPDATE playerstats SET coins = ?, lastlogin = ?, kills = ?, deaths = ?, blocksbroken = ?, blocksplaced = ?, mobskilled = ?, playerskilled = ?, timeskicked = ?, timesbanned = ?, timesmuted = ? WHERE uuid = ?");
+            statement.setInt(1, stats.getCoins());
+            statement.setLong(2, stats.getLastLogin());
+            statement.setInt(3, stats.getKills());
+            statement.setInt(4, stats.getDeaths());
+            statement.setInt(5, stats.getBlocksBroken());
+            statement.setInt(6, stats.getBlocksPlaced());
+            statement.setInt(7, stats.getMobsKilled());
+            statement.setInt(8, stats.getPlayersKilled());
+            statement.setInt(9, stats.getTimesKicked());
+            statement.setInt(10, stats.getTimesBanned());
+            statement.setInt(11, stats.getTimesMuted());
+            statement.setString(12, stats.getPlayerUUID().toString());
+
+            statement.executeUpdate();
+            statement.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

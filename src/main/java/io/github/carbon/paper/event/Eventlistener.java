@@ -1,9 +1,11 @@
 package io.github.carbon.paper.event;
 
 import io.github.carbon.carbonmc.CarbonMC;
+import io.github.carbon.carbonmc.utils.DatabaseUtil;
 import io.github.carbon.carbonmc.utils.LobbyUtil;
 import io.github.carbon.carbonmc.utils.ServerType;
 import io.github.carbon.carbonmc.utils.messages.Messages;
+import io.github.carbon.carbonmc.utils.playerstats.PlayerStats;
 import io.github.carbon.paper.scoreboard.MainLobbyScoreboard;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -31,6 +33,12 @@ public class Eventlistener implements Listener {
             player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
 
             new MainLobbyScoreboard(player);
+
+            DatabaseUtil databaseUtil = CarbonMC.get().getDatabaseUtil();
+            PlayerStats playerStats = databaseUtil.getPlayerStats(player.getUniqueId());
+
+            playerStats.setLastLogin(System.currentTimeMillis());
+            databaseUtil.updatePlayerStats(playerStats);
         }
     }
 
