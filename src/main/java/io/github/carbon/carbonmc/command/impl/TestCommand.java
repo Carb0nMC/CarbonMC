@@ -9,6 +9,7 @@ import io.github.carbon.carbonmc.utils.playerstats.PlayerStats;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 @CarbonCommand("test")
 public class TestCommand implements ICommand {
@@ -41,6 +42,12 @@ public class TestCommand implements ICommand {
         Date date = new Date(lastLogin);
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         context.getCommandSender().sendMessage("Last login: " + format.format(date));
+
+        UUID uuid = CarbonMC.get().getPlayerUUID(context.getCommandSender().getName());
+        if(context.getArgs().length == 2){
+            databaseUtil.setCoins(uuid, databaseUtil.getCoins(uuid) + 5);
+            context.getCommandSender().sendMessage("Du hast 5 coins bekommen!");
+        }
 
         return true;
     }

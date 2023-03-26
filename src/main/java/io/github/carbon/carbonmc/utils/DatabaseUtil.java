@@ -322,4 +322,15 @@ public class DatabaseUtil {
             e.printStackTrace();
         }
     }
+
+    public int getCoins(UUID uuid){
+        PlayerStats playerStats = getPlayerStats(uuid);
+        return playerStats.getCoins();
+    }
+
+    public void setCoins(UUID uuid, int coins){
+        PlayerStats playerStats = getPlayerStats(uuid);
+        playerStats.setCoins(coins);
+        updatePlayerStats(playerStats);
+    }
 }

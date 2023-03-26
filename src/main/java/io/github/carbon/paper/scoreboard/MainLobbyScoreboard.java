@@ -1,13 +1,22 @@
 package io.github.carbon.paper.scoreboard;
 
 import io.github.carbon.carbonmc.CarbonMC;
+import io.github.carbon.carbonmc.plugin.PaperLoader;
+import io.github.carbon.carbonmc.utils.DatabaseUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class MainLobbyScoreboard extends ScoreboardBuilder{
 
     public MainLobbyScoreboard(Player player){
         super(player, "§eLoading...");
+        new BukkitRunnable(){
+            @Override
+            public void run() {
+                update();
+            }
+        }.runTaskTimer(PaperLoader.getInstance(), 20, 20);
     }
 
     @Override
@@ -28,6 +37,8 @@ public class MainLobbyScoreboard extends ScoreboardBuilder{
 
     @Override
     public void update() {
+        DatabaseUtil databaseUtil = CarbonMC.get().getDatabaseUtil();
 
+        setScore("§7§l| §7§l» §eCoins§7§l:" + "§3 " + databaseUtil.getCoins(player.getUniqueId()), 4);
     }
 }
