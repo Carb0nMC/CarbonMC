@@ -2,6 +2,7 @@ package io.github.carbon.carbonmc.utils;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import io.github.carbon.carbonmc.CarbonMC;
 import io.github.carbon.carbonmc.PluginServiceProvider;
 import io.github.carbon.carbonmc.utils.messages.Message;
 import io.github.carbon.carbonmc.utils.messages.Messages;
@@ -190,6 +191,7 @@ public class DatabaseUtil {
 
 
             UserPermissionTable table = new UserPermissionTable(uuid, permissionMap);
+            updatePermissions(uuid, table);
             return table;
         } catch (Exception e) {
             e.printStackTrace();
@@ -197,6 +199,7 @@ public class DatabaseUtil {
 
         PluginServiceProvider.getCarbonMC().getLogger().severe("Returning empty UserPermissionTable");
         //Should never happen
+        updatePermissions(uuid);
         return new UserPermissionTable(uuid, new HashMap<>());
     }
 
@@ -224,8 +227,24 @@ public class DatabaseUtil {
 
             statement.executeUpdate();
             statement.close();
+
+            updatePermissions(user);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void updatePermissions(UUID uuid){
+        updatePermissions(uuid, getPermissions(uuid));
+    }
+
+    public void updatePermissions(UUID uuid, UserPermissionTable table){
+        HashMap<String, Boolean> permissions = table.getPermissions();
+
+        CarbonMC carbonMC = PluginServiceProvider.getCarbonMC();
+
+        permissions.forEach((permission, value) -> {
+            carbonMC.setPermission(uuid, permission, value);
+        });
     }
 }

@@ -74,11 +74,11 @@ public class BungeeCarbon extends Plugin implements CarbonMC {
     }
 
     @Override
-    public void setPermission(String playerName, String permission, boolean value) {
-        ProxiedPlayer player = getProxy().getPlayer(playerName);
+    public void setPermission(UUID player, String permission, boolean value) {
+        ProxiedPlayer p = getProxy().getPlayer(player);
 
-        if(player == null) return;
+        if(p == null) return;
 
-        player.setPermission(permission, value);
+        p.setPermission(permission, value);
     }
 }

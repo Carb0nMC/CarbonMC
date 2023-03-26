@@ -57,12 +57,11 @@ public class PaperCarbon extends JavaPlugin implements CarbonMC{
     }
 
     @Override
-    public void setPermission(String playerName, String permission, boolean value) {
-        Player player = Bukkit.getPlayer(playerName);
+    public void setPermission(UUID player, String permission, boolean value) {
+        Player p = Bukkit.getPlayer(player);
+        if(p == null) return;
 
-        if(player == null) return;
-
-        PermissionAttachment attachment = player.addAttachment(this);
+        PermissionAttachment attachment = p.addAttachment(this);
         attachment.setPermission(permission, value);
     }
 }

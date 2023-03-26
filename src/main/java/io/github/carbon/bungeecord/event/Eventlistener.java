@@ -3,7 +3,6 @@ package io.github.carbon.bungeecord.event;
 import io.github.carbon.carbonmc.PluginServiceProvider;
 import io.github.carbon.carbonmc.utils.DatabaseUtil;
 import io.github.carbon.carbonmc.utils.messages.Messages;
-import io.github.carbon.carbonmc.utils.permission.UserPermissionTable;
 import io.github.carbon.carbonmc.utils.setting.Settings;
 import net.md_5.bungee.api.ServerPing;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -35,11 +34,7 @@ public class Eventlistener implements Listener {
         DatabaseUtil databaseUtil = PluginServiceProvider.getCarbonMC().getDatabaseUtil();
         boolean maintenanceMode = databaseUtil.getSetting(Settings.MAINTENANCE_MODE).getValue();
 
-        UserPermissionTable permissions = databaseUtil.getPermissions(player.getUniqueId());
-        permissions.getPermissions().forEach((perm, value) -> {
-            PluginServiceProvider.getCarbonMC().getLogger().info("Setting permission " + perm + " to " + value);
-            player.setPermission(perm, value);
-        });
+        databaseUtil.updatePermissions(player.getUniqueId());
 
         if(!player.hasPermission(permission) && maintenanceMode){
             String message = databaseUtil.getMessage(Messages.MAINTENANCE_MODE_KICK).getValue();

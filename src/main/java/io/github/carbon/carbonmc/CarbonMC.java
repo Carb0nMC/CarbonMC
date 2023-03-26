@@ -33,5 +33,5 @@ public interface CarbonMC {
 
     UUID getPlayerUUID(String playerName);
 
-    void setPermission(String playerName, String permission, boolean value);
+    void setPermission(UUID player, String permission, boolean value);
 }
