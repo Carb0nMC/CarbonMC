@@ -32,7 +32,7 @@ public class DatabaseUtil {
 
             initTable("CREATE TABLE IF NOT EXISTS settings(id varchar(100) primary key, value bool)");
             initTable("CREATE TABLE IF NOT EXISTS messages(id varchar(100) primary key, value text)");
-            initTable("CREATE TABLE IF NOT EXISTS permissions(id varchar(100) primary key, permission text, value bool)");
+            initTable("CREATE TABLE IF NOT EXISTS permissions(id varchar(100), permission text, value bool)");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -188,12 +188,14 @@ public class DatabaseUtil {
 
             statement.close();
 
+
             UserPermissionTable table = new UserPermissionTable(uuid, permissionMap);
             return table;
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        PluginServiceProvider.getCarbonMC().getLogger().severe("Returning empty UserPermissionTable");
         //Should never happen
         return new UserPermissionTable(uuid, new HashMap<>());
     }
