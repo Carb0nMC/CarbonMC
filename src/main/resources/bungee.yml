@@ -2,4 +2,4 @@ name: CarbonMC
 version: 1.0
 author: CarbonMC
 description: CarbonMC Network
-main: io.github.carbon.bungeecord.BungeeCarbon
+main: io.github.carbon.carbonmc.plugin.BungeeLoader

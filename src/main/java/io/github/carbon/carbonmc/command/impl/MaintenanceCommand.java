@@ -1,6 +1,6 @@
 package io.github.carbon.carbonmc.command.impl;
 
-import io.github.carbon.carbonmc.PluginServiceProvider;
+import io.github.carbon.carbonmc.CarbonMC;
 import io.github.carbon.carbonmc.command.CarbonCommand;
 import io.github.carbon.carbonmc.command.CommandArgument;
 import io.github.carbon.carbonmc.command.CommandContext;
@@ -46,19 +46,19 @@ public class MaintenanceCommand implements ICommand {
 
             String argument = context.getArgs()[0];
 
+            DatabaseUtil databaseUtil = CarbonMC.get().getDatabaseUtil();
             if(argument.equalsIgnoreCase("status")){
-                boolean mode = PluginServiceProvider.getCarbonMC().getDatabaseUtil().getSetting(Settings.MAINTENANCE_MODE).getValue();
+                boolean mode = databaseUtil.getSetting(Settings.MAINTENANCE_MODE).getValue();
                 String message = "§eDer Wartungsmodus ist " + (mode ? "§aaktiviert" : "§cdeaktiviert") + "§e.";
-                context.getCommandSender().sendMessage(PluginServiceProvider.getCarbonMC().getPrefix() + message);
+                context.getCommandSender().sendMessage(CarbonMC.PREFIX + message);
                 return true;
             }
 
             if(argument.equalsIgnoreCase("toggle")){
-                boolean mode = PluginServiceProvider.getCarbonMC().getDatabaseUtil().getSetting(Settings.MAINTENANCE_MODE).getValue();
-                DatabaseUtil databaseUtil = PluginServiceProvider.getCarbonMC().getDatabaseUtil();
+                boolean mode = databaseUtil.getSetting(Settings.MAINTENANCE_MODE).getValue();
                 databaseUtil.updateSettings(Settings.MAINTENANCE_MODE, !mode);
                 String message = "§eDer Wartungsmodus wurde " + (!mode ? "§aaktiviert" : "§cdeaktiviert") + "§e.";
-                context.getCommandSender().sendMessage(PluginServiceProvider.getCarbonMC().getPrefix() + message);
+                context.getCommandSender().sendMessage(CarbonMC.PREFIX + message);
                 return true;
             }
 
@@ -67,11 +67,10 @@ public class MaintenanceCommand implements ICommand {
             }
             boolean newMode = context.getArgs()[0].equalsIgnoreCase("on");
 
-            DatabaseUtil databaseUtil = PluginServiceProvider.getCarbonMC().getDatabaseUtil();
             databaseUtil.updateSettings(Settings.MAINTENANCE_MODE, newMode);
 
             String message = "§eDer Wartungsmodus wurde " + (newMode ? "§aaktiviert" : "§cdeaktiviert") + "§e.";
-            context.getCommandSender().sendMessage(PluginServiceProvider.getCarbonMC().getPrefix() + message);
+            context.getCommandSender().sendMessage(CarbonMC.PREFIX + message);
             return true;
         }
 

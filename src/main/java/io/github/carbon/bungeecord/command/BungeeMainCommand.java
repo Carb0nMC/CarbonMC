@@ -1,6 +1,6 @@
 package io.github.carbon.bungeecord.command;
 
-import io.github.carbon.carbonmc.PluginServiceProvider;
+import io.github.carbon.carbonmc.CarbonMC;
 import io.github.carbon.carbonmc.command.CommandManager;
 import io.github.carbon.carbonmc.command.CommandSenderBungee;
 import io.github.carbon.carbonmc.command.ICommandSender;
@@ -16,14 +16,14 @@ public class BungeeMainCommand extends Command implements TabExecutor {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if(args.length == 0){
-            String prefix = PluginServiceProvider.getCarbonMC().getPrefix();
+            String prefix = CarbonMC.PREFIX;
             sender.sendMessage(prefix + "§cPlease use /carbon <command>");
             return;
         }
 
         String command = args[0];
         ICommandSender iCommandSender = new CommandSenderBungee(sender);
-        CommandManager commandManager = PluginServiceProvider.getCarbonMC().getCommandManager();
+        CommandManager commandManager = CarbonMC.get().getCommandManager();
         commandManager.execute(command, iCommandSender, args);
     }
 
@@ -31,6 +31,6 @@ public class BungeeMainCommand extends Command implements TabExecutor {
     public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
         int position = args.length - 1;
         String command = args[0];
-        return PluginServiceProvider.getCarbonMC().getCommandManager().getCompletions(position, command);
+        return CarbonMC.get().getCommandManager().getCompletions(position, command);
     }
 }

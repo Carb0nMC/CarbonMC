@@ -2,7 +2,7 @@ package io.github.carbon.carbonmc.command.impl;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import io.github.carbon.carbonmc.PluginServiceProvider;
+import io.github.carbon.carbonmc.CarbonMC;
 import io.github.carbon.carbonmc.command.CarbonCommand;
 import io.github.carbon.carbonmc.command.CommandArgument;
 import io.github.carbon.carbonmc.command.CommandContext;
@@ -37,7 +37,7 @@ public class PermissionCommand implements ICommand {
     public List<CommandArgument> getArguments() {
         return Arrays.asList(
                 new CommandArgument(1, "add", "remove"),
-                new CommandArgument(2, PluginServiceProvider.getCarbonMC().getOnlinePlayerNames())
+                new CommandArgument(2, CarbonMC.get().getOnlinePlayerNames())
         );
     }
 
@@ -51,7 +51,7 @@ public class PermissionCommand implements ICommand {
         if (context.getArgs().length < 3) return false;
 
         String playerName = context.getArgs()[1];
-        UUID playerUUID = PluginServiceProvider.getCarbonMC().getPlayerUUID(playerName);
+        UUID playerUUID = CarbonMC.get().getPlayerUUID(playerName);
 
         if(playerUUID == null){
             try{
@@ -75,9 +75,9 @@ public class PermissionCommand implements ICommand {
         String permission = context.getArgs()[2];
         boolean value = context.getArgs()[0].equalsIgnoreCase("add");
 
-        DatabaseUtil databaseUtil = PluginServiceProvider.getCarbonMC().getDatabaseUtil();
+        DatabaseUtil databaseUtil = CarbonMC.get().getDatabaseUtil();
         databaseUtil.setPermission(playerUUID, permission, value);
-        String prefix = PluginServiceProvider.getCarbonMC().getPrefix();
+        String prefix = CarbonMC.PREFIX;
         context.getCommandSender().sendMessage(prefix + "§aDie Berechtigung §e" + permission + " §awurde " + (value ? "erfolgreich §agewährt" : "erfolgreich §centzogen") + "§a!");
         return true;
     }

@@ -1,6 +1,6 @@
 package io.github.carbon.carbonmc.command;
 
-import io.github.carbon.carbonmc.PluginServiceProvider;
+import io.github.carbon.carbonmc.CarbonMC;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 
@@ -27,7 +27,7 @@ public class CommandManager {
                     String commandName = carbonCommand.value();
                     ICommand commandInstance = (ICommand) command.newInstance();
 
-                    PluginServiceProvider.getCarbonMC().getLogger().info("§eRegistering command: §3" + commandName);
+                    CarbonMC.get().getLogger().info("§eRegistering command: §3" + commandName);
                     this.commands.put(commandName, commandInstance);
                 }
             } catch (Exception e){
@@ -47,7 +47,7 @@ public class CommandManager {
         if(command == null) return false;
 
         if(!sender.hasPermission(command.getPermission())){
-            sender.sendMessage(PluginServiceProvider.getCarbonMC().getPrefix() + "§cDu hast keine Berechtigung diesen Befehl auszuführen!");
+            sender.sendMessage(CarbonMC.PREFIX + "§cDu hast keine Berechtigung diesen Befehl auszuführen!");
             return true;
         }
 

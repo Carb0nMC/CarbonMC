@@ -1,6 +1,6 @@
 name: CarbonMC
 version: 1.0
 author: CarbonMC
-main: io.github.carbon.paper.PaperCarbon
+main: io.github.carbon.carbonmc.plugin.PaperLoader
 commands:
   carbon:

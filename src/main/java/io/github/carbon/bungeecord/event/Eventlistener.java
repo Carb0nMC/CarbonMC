@@ -1,6 +1,6 @@
 package io.github.carbon.bungeecord.event;
 
-import io.github.carbon.carbonmc.PluginServiceProvider;
+import io.github.carbon.carbonmc.CarbonMC;
 import io.github.carbon.carbonmc.utils.DatabaseUtil;
 import io.github.carbon.carbonmc.utils.messages.Messages;
 import io.github.carbon.carbonmc.utils.setting.Settings;
@@ -16,7 +16,7 @@ public class Eventlistener implements Listener {
     public void onProxyPing(ProxyPingEvent event){
         ServerPing response = event.getResponse();
 
-        DatabaseUtil databaseUtil = PluginServiceProvider.getCarbonMC().getDatabaseUtil();
+        DatabaseUtil databaseUtil = CarbonMC.get().getDatabaseUtil();
         boolean maintenanceMode = databaseUtil.getSetting(Settings.MAINTENANCE_MODE).getValue();
         if(maintenanceMode){
             String message = databaseUtil.getMessage(Messages.MAINTENANCE_MODE).getValue();
@@ -31,7 +31,7 @@ public class Eventlistener implements Listener {
     public void onPostLogin(PostLoginEvent event){
         ProxiedPlayer player = event.getPlayer();
         String permission = "carbon.bypass.maintenance";
-        DatabaseUtil databaseUtil = PluginServiceProvider.getCarbonMC().getDatabaseUtil();
+        DatabaseUtil databaseUtil = CarbonMC.get().getDatabaseUtil();
         boolean maintenanceMode = databaseUtil.getSetting(Settings.MAINTENANCE_MODE).getValue();
 
         databaseUtil.updatePermissions(player.getUniqueId());

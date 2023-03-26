@@ -3,7 +3,6 @@ package io.github.carbon.carbonmc.utils;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.github.carbon.carbonmc.CarbonMC;
-import io.github.carbon.carbonmc.PluginServiceProvider;
 import io.github.carbon.carbonmc.utils.messages.Message;
 import io.github.carbon.carbonmc.utils.messages.Messages;
 import io.github.carbon.carbonmc.utils.permission.UserPermissionTable;
@@ -29,7 +28,7 @@ public class DatabaseUtil {
             String url = "jdbc:mysql://" + host + "/" + database;
 
             this.connection = DriverManager.getConnection(url, username, password);
-            PluginServiceProvider.getCarbonMC().getLogger().info("Connected to database! Checking tables...");
+            CarbonMC.get().getLogger().info("Connected to database! Checking tables...");
 
             initTable("CREATE TABLE IF NOT EXISTS settings(id varchar(100) primary key, value bool)");
             initTable("CREATE TABLE IF NOT EXISTS messages(id varchar(100) primary key, value text)");
@@ -197,7 +196,7 @@ public class DatabaseUtil {
             e.printStackTrace();
         }
 
-        PluginServiceProvider.getCarbonMC().getLogger().severe("Returning empty UserPermissionTable");
+        CarbonMC.get().getLogger().severe("Returning empty UserPermissionTable");
         //Should never happen
         updatePermissions(uuid);
         return new UserPermissionTable(uuid, new HashMap<>());
@@ -207,7 +206,7 @@ public class DatabaseUtil {
         try{
             UserPermissionTable permissions = getPermissions(user);
             if(!permissions.getPermissions().containsKey(permission)){
-                PluginServiceProvider.getCarbonMC().getLogger().severe("Permission is not set, defaulting to false first");
+                CarbonMC.get().getLogger().severe("Permission is not set, defaulting to false first");
 
                 PreparedStatement statement = getConnection().prepareStatement("INSERT INTO permissions(id, permission, value) VALUES (?, ?, ?)");
                 statement.setString(1, user.toString());
@@ -217,7 +216,7 @@ public class DatabaseUtil {
                 statement.executeUpdate();
                 statement.close();
 
-                PluginServiceProvider.getCarbonMC().getLogger().severe("Default Set, retrying...");
+                CarbonMC.get().getLogger().severe("Default Set, retrying...");
             }
 
             PreparedStatement statement = getConnection().prepareStatement("UPDATE permissions SET value = ? WHERE id = ? AND permission = ?");
@@ -241,7 +240,7 @@ public class DatabaseUtil {
     public void updatePermissions(UUID uuid, UserPermissionTable table){
         HashMap<String, Boolean> permissions = table.getPermissions();
 
-        CarbonMC carbonMC = PluginServiceProvider.getCarbonMC();
+        CarbonMC carbonMC = CarbonMC.get();
 
         permissions.forEach((permission, value) -> {
             carbonMC.setPermission(uuid, permission, value);

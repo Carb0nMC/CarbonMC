@@ -1,6 +1,6 @@
 package io.github.carbon.paper.command;
 
-import io.github.carbon.carbonmc.PluginServiceProvider;
+import io.github.carbon.carbonmc.CarbonMC;
 import io.github.carbon.carbonmc.command.CommandManager;
 import io.github.carbon.carbonmc.command.CommandSenderPaper;
 import io.github.carbon.carbonmc.command.ICommandSender;
@@ -17,14 +17,14 @@ public class PaperMainCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
         if(args.length == 0){
-            String prefix = PluginServiceProvider.getCarbonMC().getPrefix();
+            String prefix = CarbonMC.PREFIX;
             commandSender.sendMessage(prefix + "§cPlease use /carbon <command>");
             return false;
         }
 
         String subCommand = args[0];
         ICommandSender sender = new CommandSenderPaper(commandSender);
-        CommandManager commandManager = PluginServiceProvider.getCarbonMC().getCommandManager();
+        CommandManager commandManager = CarbonMC.get().getCommandManager();
         commandManager.execute(subCommand, sender, args);
         return true;
     }
@@ -32,7 +32,7 @@ public class PaperMainCommand implements CommandExecutor, TabCompleter {
     @Override
     public @Nullable List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         int position = args.length - 1;
-        CommandManager commandManager = PluginServiceProvider.getCarbonMC().getCommandManager();
+        CommandManager commandManager = CarbonMC.get().getCommandManager();
         ArrayList<String> completions = commandManager.getCompletions(position, args[0]);
 
         if(!completions.isEmpty()) return completions;

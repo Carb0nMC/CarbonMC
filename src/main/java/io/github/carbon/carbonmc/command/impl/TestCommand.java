@@ -1,6 +1,6 @@
 package io.github.carbon.carbonmc.command.impl;
 
-import io.github.carbon.carbonmc.PluginServiceProvider;
+import io.github.carbon.carbonmc.CarbonMC;
 import io.github.carbon.carbonmc.command.CarbonCommand;
 import io.github.carbon.carbonmc.command.CommandContext;
 import io.github.carbon.carbonmc.command.ICommand;
@@ -33,7 +33,7 @@ public class TestCommand implements ICommand {
     @Override
     public boolean execute(CommandContext context) {
         context.getCommandSender().sendMessage("Test command executed!");
-        DatabaseUtil databaseUtil = PluginServiceProvider.getCarbonMC().getDatabaseUtil();
+        DatabaseUtil databaseUtil = CarbonMC.get().getDatabaseUtil();
         Setting setting = databaseUtil.getSetting(Settings.MAINTENANCE_MODE);
         boolean value = setting.getValue();
 
