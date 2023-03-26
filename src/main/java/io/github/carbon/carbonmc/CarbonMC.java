@@ -2,6 +2,7 @@ package io.github.carbon.carbonmc;
 
 import io.github.carbon.carbonmc.command.CommandManager;
 import io.github.carbon.carbonmc.utils.DatabaseUtil;
+import io.github.carbon.carbonmc.utils.ServerType;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -32,6 +33,8 @@ public interface CarbonMC {
     ArrayList<String> getOnlinePlayerNames();
 
     UUID getPlayerUUID(String playerName);
+    String getServerID();
+    ServerType getServerType();
 
     void setPermission(UUID player, String permission, boolean value);
 }

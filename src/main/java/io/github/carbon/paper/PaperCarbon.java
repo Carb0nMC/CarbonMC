@@ -4,6 +4,7 @@ import io.github.carbon.carbonmc.CarbonMC;
 import io.github.carbon.carbonmc.PluginServiceProvider;
 import io.github.carbon.carbonmc.command.CommandManager;
 import io.github.carbon.carbonmc.utils.DatabaseUtil;
+import io.github.carbon.carbonmc.utils.ServerType;
 import io.github.carbon.paper.command.PaperMainCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -17,6 +18,8 @@ import java.util.logging.Logger;
 public class PaperCarbon extends JavaPlugin implements CarbonMC{
     private CommandManager commandManager;
     private DatabaseUtil databaseUtil;
+    private String serverID;
+    private ServerType serverType;
 
     @Override
     public void onEnable() {
@@ -26,6 +29,8 @@ public class PaperCarbon extends JavaPlugin implements CarbonMC{
 
         getCommand("carbon").setExecutor(new PaperMainCommand());
         getCommand("carbon").setTabCompleter(new PaperMainCommand());
+
+
     }
 
     @Override
@@ -63,5 +68,15 @@ public class PaperCarbon extends JavaPlugin implements CarbonMC{
 
         PermissionAttachment attachment = p.addAttachment(this);
         attachment.setPermission(permission, value);
+    }
+
+    @Override
+    public String getServerID() {
+        return serverID;
+    }
+
+    @Override
+    public ServerType getServerType() {
+        return serverType;
     }
 }

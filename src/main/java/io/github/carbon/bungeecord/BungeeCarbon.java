@@ -6,6 +6,7 @@ import io.github.carbon.carbonmc.CarbonMC;
 import io.github.carbon.carbonmc.PluginServiceProvider;
 import io.github.carbon.carbonmc.command.CommandManager;
 import io.github.carbon.carbonmc.utils.DatabaseUtil;
+import io.github.carbon.carbonmc.utils.ServerType;
 import io.github.carbon.discord.DiscordBot;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -18,6 +19,8 @@ public class BungeeCarbon extends Plugin implements CarbonMC {
     private CommandManager commandManager;
     private DiscordBot discordBot;
     private DatabaseUtil databaseUtil;
+    private String serverID;
+    private ServerType serverType;
 
     @Override
     public void onEnable() {
@@ -80,5 +83,15 @@ public class BungeeCarbon extends Plugin implements CarbonMC {
         if(p == null) return;
 
         p.setPermission(permission, value);
+    }
+
+    @Override
+    public ServerType getServerType() {
+        return serverType;
+    }
+
+    @Override
+    public String getServerID() {
+        return serverID;
     }
 }
