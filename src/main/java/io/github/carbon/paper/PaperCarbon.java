@@ -3,6 +3,7 @@ package io.github.carbon.paper;
 import io.github.carbon.carbonmc.CarbonMC;
 import io.github.carbon.carbonmc.plugin.PaperLoader;
 import io.github.carbon.carbonmc.utils.ServerStartupUtil;
+import io.github.carbon.paper.scoreboard.MainLobbyScoreboard;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
@@ -26,7 +27,9 @@ public class PaperCarbon extends CarbonMC{
 
     @Override
     protected void onEnable() {
-
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            new MainLobbyScoreboard(player);
+        });
     }
 
     @Override
