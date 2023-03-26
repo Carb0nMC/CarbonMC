@@ -36,28 +36,45 @@ public class MaintenanceCommand implements ICommand {
     @Override
     public List<CommandArgument> getArguments() {
         return Arrays.asList(
-                new CommandArgument(1, "on", "off")
+                new CommandArgument(1, "on", "off", "status", "toggle")
         );
     }
 
     @Override
     public boolean execute(CommandContext context) {
-        if(context.getArgs().length != 1){
-            return false;
+        if(context.getArgs().length == 1) {
+
+            String argument = context.getArgs()[0];
+
+            if(argument.equalsIgnoreCase("status")){
+                boolean mode = PluginServiceProvider.getCarbonMC().getDatabaseUtil().getSetting(Settings.MAINTENANCE_MODE).getValue();
+                String message = "§eDer Wartungsmodus ist " + (mode ? "§aaktiviert" : "§cdeaktiviert") + "§e.";
+                context.getCommandSender().sendMessage(PluginServiceProvider.getCarbonMC().getPrefix() + message);
+                return true;
+            }
+
+            if(argument.equalsIgnoreCase("toggle")){
+                boolean mode = PluginServiceProvider.getCarbonMC().getDatabaseUtil().getSetting(Settings.MAINTENANCE_MODE).getValue();
+                DatabaseUtil databaseUtil = PluginServiceProvider.getCarbonMC().getDatabaseUtil();
+                databaseUtil.updateSettings(Settings.MAINTENANCE_MODE, !mode);
+                String message = "§eDer Wartungsmodus wurde " + (!mode ? "§aaktiviert" : "§cdeaktiviert") + "§e.";
+                context.getCommandSender().sendMessage(PluginServiceProvider.getCarbonMC().getPrefix() + message);
+                return true;
+            }
+
+            if (!argument.equalsIgnoreCase("on") && !argument.equalsIgnoreCase("off")) {
+                return false;
+            }
+            boolean newMode = context.getArgs()[0].equalsIgnoreCase("on");
+
+            DatabaseUtil databaseUtil = PluginServiceProvider.getCarbonMC().getDatabaseUtil();
+            databaseUtil.updateSettings(Settings.MAINTENANCE_MODE, newMode);
+
+            String message = "§eDer Wartungsmodus wurde " + (newMode ? "§aaktiviert" : "§cdeaktiviert") + "§e.";
+            context.getCommandSender().sendMessage(PluginServiceProvider.getCarbonMC().getPrefix() + message);
+            return true;
         }
 
-        String argument = context.getArgs()[0];
-
-        if(!argument.equalsIgnoreCase("on") && !argument.equalsIgnoreCase("off")){
-            return false;
-        }
-        boolean newMode = context.getArgs()[0].equalsIgnoreCase("on");
-
-        DatabaseUtil databaseUtil = PluginServiceProvider.getCarbonMC().getDatabaseUtil();
-        databaseUtil.updateSettings(Settings.MAINTENANCE_MODE, newMode);
-
-        String message = "§eDer Wartungsmodus wurde " + (newMode ? "§aaktiviert" : "§cdeaktiviert") + "§e.";
-        context.getCommandSender().sendMessage(PluginServiceProvider.getCarbonMC().getPrefix() + message);
-        return true;
+        return false;
     }
 }

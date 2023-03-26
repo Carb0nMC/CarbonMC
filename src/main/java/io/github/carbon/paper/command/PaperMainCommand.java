@@ -8,7 +8,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -33,7 +32,6 @@ public class PaperMainCommand implements CommandExecutor, TabCompleter {
     @Override
     public @Nullable List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         int position = args.length - 1;
-        // /carbon <cmd> <arg1> <arg2> <arg3>...
         CommandManager commandManager = PluginServiceProvider.getCarbonMC().getCommandManager();
         ArrayList<String> completions = commandManager.getCompletions(position, args[0]);
 

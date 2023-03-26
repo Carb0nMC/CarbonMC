@@ -1,5 +1,7 @@
 package io.github.carbon.carbonmc.command.impl;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import io.github.carbon.carbonmc.PluginServiceProvider;
 import io.github.carbon.carbonmc.command.CarbonCommand;
 import io.github.carbon.carbonmc.command.CommandArgument;
@@ -7,6 +9,9 @@ import io.github.carbon.carbonmc.command.CommandContext;
 import io.github.carbon.carbonmc.command.ICommand;
 import io.github.carbon.carbonmc.utils.DatabaseUtil;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -48,8 +53,22 @@ public class PermissionCommand implements ICommand {
         String playerName = context.getArgs()[1];
         UUID playerUUID = PluginServiceProvider.getCarbonMC().getPlayerUUID(playerName);
 
-        if (playerUUID == null) {
-            context.getCommandSender().sendMessage("§cDer Spieler " + playerName + " wurde nicht gefunden!");
+        if(playerUUID == null){
+            try{
+                URL url = new URL("https://api.mojang.com/users/profiles/minecraft/" +  playerName);
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(url.openStream()));
+
+                String uuidS = getUUID(playerName);
+                playerUUID = UUID.fromString(uuidS);
+            } catch (Exception e){
+                context.getCommandSender().sendMessage("§cDer Spieler konnte nicht gefunden werden!");
+                e.printStackTrace();
+                return true;
+            }
+        }
+
+        if(playerUUID == null) {
+            context.getCommandSender().sendMessage("§cDer Spieler konnte nicht gefunden werden!");
             return true;
         }
 
@@ -58,8 +77,22 @@ public class PermissionCommand implements ICommand {
 
         DatabaseUtil databaseUtil = PluginServiceProvider.getCarbonMC().getDatabaseUtil();
         databaseUtil.setPermission(playerUUID, permission, value);
-
-        //TODO: Update Permissions on join
+        String prefix = PluginServiceProvider.getCarbonMC().getPrefix();
+        context.getCommandSender().sendMessage(prefix + "§aDie Berechtigung §e" + permission + " §awurde " + (value ? "erfolgreich §agewährt" : "erfolgreich §centzogen") + "§a!");
         return true;
+    }
+
+    public String getUUID(String name) {
+        String uuid = "";
+        try {
+            BufferedReader in = new BufferedReader(new InputStreamReader(new URL("https://api.mojang.com/users/profiles/minecraft/" + name).openStream()));
+            uuid = (((JsonObject)new JsonParser().parse(in)).get("id")).toString().replaceAll("\"", "");
+            uuid = uuid.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})", "$1-$2-$3-$4-$5");
+            in.close();
+        } catch (Exception e) {
+            System.out.println("Unable to get UUID of: " + name + "!");
+            uuid = "er";
+        }
+        return uuid;
     }
 }

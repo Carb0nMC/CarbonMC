@@ -10,7 +10,7 @@ import net.md_5.bungee.api.plugin.TabExecutor;
 
 public class BungeeMainCommand extends Command implements TabExecutor {
     public BungeeMainCommand() {
-        super("carbon");
+        super("bcarbon");
     }
 
     @Override
