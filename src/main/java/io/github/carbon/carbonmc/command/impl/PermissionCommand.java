@@ -43,7 +43,7 @@ public class PermissionCommand implements ICommand {
 
     @Override
     public String getPermission() {
-        return "carbonmc.command.permission";
+        return "carbon.command.permission";
     }
 
     @Override

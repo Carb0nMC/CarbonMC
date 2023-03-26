@@ -1,6 +1,8 @@
 package io.github.carbon.carbonmc.utils.messages;
 
 public enum Messages {
+    DENY_BLOCK_BREAK("deny_block_break", "§c§lDu darfst hier keine Blöcke abbauen."),
+    DENY_BLOCK_PLACE("deny_block_place", "§c§lDu darfst hier keine Blöcke platzieren."),
     MAINTENANCE_MODE("maintenance_mode", "§e§lCarbonMC §8» §7Der Server befindet sich zurzeit in Wartungsarbeiten."),
     MAINTENANCE_MODE_KICK("maintenance_mode_kick", "" +
             "§c§lWartungsarbeiten\n" +

@@ -23,13 +23,14 @@ public abstract class CarbonMC {
     protected boolean isBungee;
 
     public CarbonMC(){
+        this.logger = Logger.getLogger("CarbonMC");
+
         isBungee = PluginService.getSruntime().isBungee();
         System.out.println("ServerType: " + PluginService.getSruntime().name());
         System.out.println("isBungee: " + isBungee);
     }
 
     public void enable(){
-        this.logger = Logger.getLogger("CarbonMC");
 
         this.databaseUtil = new DatabaseUtil();
         this.commandManager = new CommandManager();

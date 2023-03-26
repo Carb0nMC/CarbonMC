@@ -2,6 +2,7 @@ package io.github.carbon.paper;
 
 import io.github.carbon.carbonmc.CarbonMC;
 import io.github.carbon.carbonmc.plugin.PaperLoader;
+import io.github.carbon.carbonmc.utils.ServerStartupUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
@@ -15,6 +16,12 @@ public class PaperCarbon extends CarbonMC{
 
     public PaperCarbon(){
         super();
+
+        this.serverID = ServerStartupUtil.findServerID();
+        this.serverType = ServerStartupUtil.findServerType();
+
+        String message = "CarbonMC is running on " + Bukkit.getName() + " " + Bukkit.getVersion() + " with CarbonMC " + CarbonMC.VERSION + ". Starting Server ID: " + serverID + " with type " + serverType.name();
+        getLogger().info(message);
     }
 
     @Override
