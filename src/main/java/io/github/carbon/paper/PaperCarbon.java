@@ -3,6 +3,7 @@ package io.github.carbon.paper;
 import io.github.carbon.carbonmc.CarbonMC;
 import io.github.carbon.carbonmc.plugin.PaperLoader;
 import io.github.carbon.carbonmc.utils.ServerStartupUtil;
+import io.github.carbon.paper.menu.MenuManager;
 import io.github.carbon.paper.scoreboard.MainLobbyScoreboard;
 import io.github.carbon.paper.tablist.TablistManager;
 import org.bukkit.Bukkit;
@@ -16,25 +17,28 @@ import java.util.stream.Collectors;
 
 public class PaperCarbon extends CarbonMC{
     private TablistManager tablistManager;
+    private MenuManager menuManager;
 
     public PaperCarbon(){
         super();
 
         this.serverID = ServerStartupUtil.findServerID();
         this.serverType = ServerStartupUtil.findServerType();
-
         String message = "CarbonMC is running on " + Bukkit.getName() + " " + Bukkit.getVersion() + " with CarbonMC " + CarbonMC.VERSION + ". Starting Server ID: " + serverID + " with type " + serverType.name();
         getLogger().info(message);
     }
 
+
     @Override
     protected void onEnable() {
         this.tablistManager = new TablistManager();
+        this.menuManager = new MenuManager();
         Bukkit.getOnlinePlayers().forEach(player -> {
             new MainLobbyScoreboard(player);
             tablistManager.setTablist(player);
             tablistManager.setAllPlayersTeams();
         });
+
     }
 
     @Override
@@ -59,6 +63,7 @@ public class PaperCarbon extends CarbonMC{
         PermissionAttachment attachment = playerToSet.addAttachment(PaperLoader.getInstance());
         attachment.setPermission(permission, value);
     }
+
 
     public TablistManager getTablistManager() {
         return tablistManager;
