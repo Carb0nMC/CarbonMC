@@ -2,5 +2,10 @@ name: CarbonMC
 version: 1.0
 author: CarbonMC
 main: io.github.carbon.carbonmc.plugin.PaperLoader
+depend: [NoteBlockAPI]
+api-version: 1.19
+softdepend: [PlaceholderAPI]
 commands:
+  music:
+  adminmusic:
   carbon:

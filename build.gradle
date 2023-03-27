@@ -20,6 +20,9 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    mavenLocal()
+
+    maven { url 'https://jitpack.io' }
 
     maven {
         url 'https://repo.papermc.io/repository/maven-public/'
@@ -27,13 +30,25 @@ repositories {
 
     maven {
         url 'https://repo.papermc.io/repository/maven-public/'
+    }
+
+    maven {
+        url 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
+    }
+
+    maven {
+        url 'https://oss.sonatype.org/content/groups/public'
     }
 }
 
 dependencies {
+    compileOnly 'com.github.koca2000:NoteBlockAPI:1.6.1'
     implementation("net.dv8tion:JDA:5.0.0-beta.6")
     implementation(group: 'org.reflections', name: 'reflections', version: '0.9.10')
+    implementation("me.clip:placeholderapi:2.11.3")
+    implementation('com.tchristofferson:ConfigUpdater:2.0-SNAPSHOT')
 
+    compileOnly("org.spigotmc:spigot:1.19.4-R0.1-SNAPSHOT")
     compileOnly("io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT")
     compileOnly("io.github.waterfallmc:waterfall-api:1.19-R0.1-SNAPSHOT")
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
