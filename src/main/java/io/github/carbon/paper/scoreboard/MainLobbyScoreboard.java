@@ -42,9 +42,9 @@ public class MainLobbyScoreboard extends ScoreboardBuilder{
         DatabaseUtil databaseUtil = CarbonMC.get().getDatabaseUtil();
         PlayerRank rank = databaseUtil.getRank(player.getUniqueId());
         switch (rank){
-            case ADMIN -> setScore("§7§l| " + Messages.TEAM_ADMIN_PREFIX, 6);
-            case DEVELOPER -> setScore("§7§l| " + Messages.TEAM_DEVELOPERS_PREFIX, 6);
-            case PLAYER -> setScore("§7§l| " + Messages.TEAM_PLAYERS_PREFIX, 6);
+            case ADMIN -> setScore("§7§l| " + databaseUtil.getMessage(Messages.TEAM_ADMIN_PREFIX).getValue(), 6);
+            case DEVELOPER -> setScore("§7§l| " + databaseUtil.getMessage(Messages.TEAM_DEVELOPERS_PREFIX).getValue(), 6);
+            case PLAYER -> setScore("§7§l| " + databaseUtil.getMessage(Messages.TEAM_PLAYERS_PREFIX).getValue(), 6);
         }
 
         setScore("§7§l| §7§l» §eCoins§7§l:" + "§3 " + databaseUtil.getCoins(player.getUniqueId()), 4);
