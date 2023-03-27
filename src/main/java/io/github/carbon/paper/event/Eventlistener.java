@@ -6,6 +6,7 @@ import io.github.carbon.carbonmc.utils.LobbyUtil;
 import io.github.carbon.carbonmc.utils.ServerType;
 import io.github.carbon.carbonmc.utils.messages.Messages;
 import io.github.carbon.carbonmc.utils.playerstats.PlayerStats;
+import io.github.carbon.paper.PaperCarbon;
 import io.github.carbon.paper.scoreboard.MainLobbyScoreboard;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -39,6 +40,9 @@ public class Eventlistener implements Listener {
 
             playerStats.setLastLogin(System.currentTimeMillis());
             databaseUtil.updatePlayerStats(playerStats);
+            ((PaperCarbon) PaperCarbon.get()).getTablistManager().setTablist(player);
+            ((PaperCarbon) PaperCarbon.get()).getTablistManager().setAllPlayersTeams();
+
         }
     }
 

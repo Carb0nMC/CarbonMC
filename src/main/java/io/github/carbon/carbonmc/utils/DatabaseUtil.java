@@ -34,7 +34,7 @@ public class DatabaseUtil {
             initTable("CREATE TABLE IF NOT EXISTS settings(id varchar(100) primary key, value bool)");
             initTable("CREATE TABLE IF NOT EXISTS messages(id varchar(100) primary key, value text)");
             initTable("CREATE TABLE IF NOT EXISTS permissions(id varchar(100), permission text, value bool)");
-            initTable("CREATE TABLE IF NOT EXISTS playerstats(uuid varchar(100) primary key, coins int, lastlogin bigint, kills int, deaths int, blocksbroken int, blocksplaced int, mobskilled int, playerskilled int, timeskicked int, timesbanned int, timesmuted int)");
+            initTable("CREATE TABLE IF NOT EXISTS playerstats(uuid varchar(100) primary key, coins int, lastlogin bigint, kills int, deaths int, blocksbroken int, blocksplaced int, mobskilled int, playerskilled int, timeskicked int, timesbanned int, timesmuted int, rank text)");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -267,8 +267,10 @@ public class DatabaseUtil {
                 int timeskicked = results.getInt("timeskicked");
                 int timesbanned = results.getInt("timesbanned");
                 int timesmuted = results.getInt("timesmuted");
+                String rank = results.getString("rank");
+                PlayerRank playerRank = PlayerRank.valueOf(rank);
 
-                PlayerStats stats = new PlayerStats(uuid, coins, lastLogin, kills, deaths, blocksbroken, blocksplaced, mobskilled, playerskilled, timeskicked, timesbanned, timesmuted);
+                PlayerStats stats = new PlayerStats(uuid, coins, lastLogin, kills, deaths, blocksbroken, blocksplaced, mobskilled, playerskilled, timeskicked, timesbanned, timesmuted, playerRank);
                 statement.close();
                 return stats;
             }
@@ -277,7 +279,7 @@ public class DatabaseUtil {
         }
 
         try{
-            PreparedStatement statement = getConnection().prepareStatement("INSERT INTO playerstats(uuid, coins, lastlogin, kills, deaths, blocksbroken, blocksplaced, mobskilled, playerskilled, timeskicked, timesbanned, timesmuted) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
+            PreparedStatement statement = getConnection().prepareStatement("INSERT INTO playerstats(uuid, coins, lastlogin, kills, deaths, blocksbroken, blocksplaced, mobskilled, playerskilled, timeskicked, timesbanned, timesmuted, rank) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
             statement.setString(1, uuid.toString());
             statement.setInt(2, 0);
             statement.setLong(3, System.currentTimeMillis());
@@ -290,6 +292,7 @@ public class DatabaseUtil {
             statement.setInt(10, 0);
             statement.setInt(11, 0);
             statement.setInt(12, 0);
+            statement.setString(13, PlayerRank.PLAYER.name());
 
             statement.executeUpdate();
             statement.close();
@@ -297,12 +300,12 @@ public class DatabaseUtil {
             e.printStackTrace();
         }
 
-        return new PlayerStats(uuid, 0, System.currentTimeMillis(), 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        return new PlayerStats(uuid, 0, System.currentTimeMillis(), 0, 0, 0, 0, 0, 0, 0, 0, 0, PlayerRank.PLAYER);
     }
 
     public void updatePlayerStats(PlayerStats stats){
         try{
-            PreparedStatement statement = getConnection().prepareStatement("UPDATE playerstats SET coins = ?, lastlogin = ?, kills = ?, deaths = ?, blocksbroken = ?, blocksplaced = ?, mobskilled = ?, playerskilled = ?, timeskicked = ?, timesbanned = ?, timesmuted = ? WHERE uuid = ?");
+            PreparedStatement statement = getConnection().prepareStatement("UPDATE playerstats SET coins = ?, lastlogin = ?, kills = ?, deaths = ?, blocksbroken = ?, blocksplaced = ?, mobskilled = ?, playerskilled = ?, timeskicked = ?, timesbanned = ?, timesmuted = ?, rank = ? WHERE uuid = ?");
             statement.setInt(1, stats.getCoins());
             statement.setLong(2, stats.getLastLogin());
             statement.setInt(3, stats.getKills());
@@ -314,13 +317,19 @@ public class DatabaseUtil {
             statement.setInt(9, stats.getTimesKicked());
             statement.setInt(10, stats.getTimesBanned());
             statement.setInt(11, stats.getTimesMuted());
-            statement.setString(12, stats.getPlayerUUID().toString());
+            statement.setString(12, stats.getRank().name());
+            statement.setString(13, stats.getPlayerUUID().toString());
 
             statement.executeUpdate();
             statement.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public PlayerRank getRank(UUID uuid){
+        PlayerStats playerStats = getPlayerStats(uuid);
+        return playerStats.getRank();
     }
 
     public int getCoins(UUID uuid){

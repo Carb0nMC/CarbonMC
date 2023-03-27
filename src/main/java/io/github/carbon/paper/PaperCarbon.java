@@ -4,6 +4,7 @@ import io.github.carbon.carbonmc.CarbonMC;
 import io.github.carbon.carbonmc.plugin.PaperLoader;
 import io.github.carbon.carbonmc.utils.ServerStartupUtil;
 import io.github.carbon.paper.scoreboard.MainLobbyScoreboard;
+import io.github.carbon.paper.tablist.TablistManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 
 
 public class PaperCarbon extends CarbonMC{
+    private TablistManager tablistManager;
 
     public PaperCarbon(){
         super();
@@ -27,8 +29,11 @@ public class PaperCarbon extends CarbonMC{
 
     @Override
     protected void onEnable() {
+        this.tablistManager = new TablistManager();
         Bukkit.getOnlinePlayers().forEach(player -> {
             new MainLobbyScoreboard(player);
+            tablistManager.setTablist(player);
+            tablistManager.setAllPlayersTeams();
         });
     }
 
@@ -53,6 +58,9 @@ public class PaperCarbon extends CarbonMC{
         if(playerToSet == null) return;
         PermissionAttachment attachment = playerToSet.addAttachment(PaperLoader.getInstance());
         attachment.setPermission(permission, value);
+    }
 
+    public TablistManager getTablistManager() {
+        return tablistManager;
     }
 }

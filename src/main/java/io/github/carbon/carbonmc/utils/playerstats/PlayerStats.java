@@ -1,5 +1,7 @@
 package io.github.carbon.carbonmc.utils.playerstats;
 
+import io.github.carbon.carbonmc.utils.PlayerRank;
+
 import java.util.UUID;
 
 public class PlayerStats {
@@ -15,8 +17,9 @@ public class PlayerStats {
     private int timesKicked;
     private int timesBanned;
     private int timesMuted;
+    private PlayerRank rank;
 
-    public PlayerStats(UUID playerUUID, int coins, long lastLogin, int kills, int deaths, int blocksBroken, int blocksPlaced, int mobsKilled, int playersKilled, int timesKicked, int timesBanned, int timesMuted) {
+    public PlayerStats(UUID playerUUID, int coins, long lastLogin, int kills, int deaths, int blocksBroken, int blocksPlaced, int mobsKilled, int playersKilled, int timesKicked, int timesBanned, int timesMuted, PlayerRank rank) {
         this.playerUUID = playerUUID;
         this.coins = coins;
         this.lastLogin = lastLogin;
@@ -29,6 +32,7 @@ public class PlayerStats {
         this.timesKicked = timesKicked;
         this.timesBanned = timesBanned;
         this.timesMuted = timesMuted;
+        this.rank = rank;
     }
 
     public UUID getPlayerUUID() {
@@ -83,6 +87,10 @@ public class PlayerStats {
         return blocksPlaced;
     }
 
+    public PlayerRank getRank() {
+        return rank;
+    }
+
     public void setBlocksPlaced(int blocksPlaced) {
         this.blocksPlaced = blocksPlaced;
     }
@@ -125,5 +133,9 @@ public class PlayerStats {
 
     public void setTimesMuted(int timesMuted) {
         this.timesMuted = timesMuted;
+    }
+
+    public void setRank(PlayerRank rank) {
+        this.rank = rank;
     }
 }
