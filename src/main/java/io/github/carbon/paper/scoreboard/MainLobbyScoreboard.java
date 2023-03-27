@@ -47,7 +47,6 @@ public class MainLobbyScoreboard extends ScoreboardBuilder{
             case PLAYER -> setScore("§7§l| " + Messages.TEAM_PLAYERS_PREFIX, 6);
         }
 
-        setScore("§7§l| " + , 6);
         setScore("§7§l| §7§l» §eCoins§7§l:" + "§3 " + databaseUtil.getCoins(player.getUniqueId()), 4);
     }
 }
