@@ -231,7 +231,6 @@ public class JukeBox implements Listener{
     }
 
     private void finishEnabling(){
-        PaperLoader.getInstance().getCommand("music").setExecutor(new CommandMusic());
         PaperLoader.getInstance().getCommand("adminmusic").setExecutor(new CommandAdmin());
 
         Bukkit.getServer().getPluginManager().registerEvents(this, PaperLoader.getInstance());

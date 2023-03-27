@@ -3,6 +3,8 @@ package io.github.carbon.paper.scoreboard;
 import io.github.carbon.carbonmc.CarbonMC;
 import io.github.carbon.carbonmc.plugin.PaperLoader;
 import io.github.carbon.carbonmc.utils.DatabaseUtil;
+import io.github.carbon.carbonmc.utils.PlayerRank;
+import io.github.carbon.carbonmc.utils.messages.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -38,7 +40,14 @@ public class MainLobbyScoreboard extends ScoreboardBuilder{
     @Override
     public void update() {
         DatabaseUtil databaseUtil = CarbonMC.get().getDatabaseUtil();
+        PlayerRank rank = databaseUtil.getRank(player.getUniqueId());
+        switch (rank){
+            case ADMIN -> setScore("§7§l| " + Messages.TEAM_ADMIN_PREFIX, 6);
+            case DEVELOPER -> setScore("§7§l| " + Messages.TEAM_DEVELOPERS_PREFIX, 6);
+            case PLAYER -> setScore("§7§l| " + Messages.TEAM_PLAYERS_PREFIX, 6);
+        }
 
+        setScore("§7§l| " + , 6);
         setScore("§7§l| §7§l» §eCoins§7§l:" + "§3 " + databaseUtil.getCoins(player.getUniqueId()), 4);
     }
 }
