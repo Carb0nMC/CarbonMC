@@ -6,6 +6,7 @@ depend: [NoteBlockAPI]
 api-version: 1.19
 softdepend: [PlaceholderAPI]
 commands:
+  npc:
   music:
     permission: carbon.command.music
   adminmusic:
