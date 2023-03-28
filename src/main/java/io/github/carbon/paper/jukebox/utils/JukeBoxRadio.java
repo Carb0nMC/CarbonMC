@@ -60,6 +60,7 @@ public class JukeBoxRadio implements Listener {
             Player p = Bukkit.getPlayer(id);
             if (p != null) JukeBox.sendMessage(p, Lang.MUSIC_STOPPED);
         }
+        Player player = null;
         songPlayer.destroy();
     }
 

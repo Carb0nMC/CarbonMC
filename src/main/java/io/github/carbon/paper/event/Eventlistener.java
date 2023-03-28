@@ -17,6 +17,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 
 public class Eventlistener implements Listener {
     @EventHandler
@@ -61,6 +62,17 @@ public class Eventlistener implements Listener {
             String value = CarbonMC.get().getDatabaseUtil().getMessage(Messages.DENY_BLOCK_PLACE).getValue();
             player.sendMessage(CarbonMC.PREFIX + value);
             event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onMove(PlayerMoveEvent event){
+        Player player = event.getPlayer();
+
+        if(CarbonMC.get().getServerType() == ServerType.LOBBY){
+            if(player.getLocation().getY() < 50){
+                player.teleport(LobbyUtil.getLobbySpawnLocation());
+            }
         }
     }
 }
