@@ -1,11 +1,9 @@
 package io.github.carbon.paper.npc.event;
 
-import com.google.common.io.ByteArrayDataOutput;
-import com.google.common.io.ByteStreams;
-import io.github.carbon.carbonmc.plugin.PaperLoader;
 import io.github.carbon.paper.npc.Npc;
 import io.github.carbon.paper.npc.NpcLoader;
 import io.github.carbon.paper.npc.utils.ReflectionUtils;
+import io.github.carbon.paper.task.SendPlayerToServerTask;
 import net.minecraft.network.protocol.game.ServerboundInteractPacket;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -47,10 +45,7 @@ public class PacketReceivedListener implements Listener {
                         }
                         String server = args[1];
 
-                        ByteArrayDataOutput out = ByteStreams.newDataOutput();
-                        out.writeUTF("Connect");
-                        out.writeUTF(server);
-                        event.getPlayer().sendPluginMessage(PaperLoader.getInstance(), "BungeeCord", out.toByteArray());
+                        new SendPlayerToServerTask(event.getPlayer(), server);
                         return;
                     }
 
