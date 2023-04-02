@@ -199,8 +199,7 @@ public class DatabaseUtil {
         }
 
         CarbonMC.get().getLogger().severe("Returning empty UserPermissionTable");
-        //Should never happen
-        updatePermissions(uuid);
+        //Should never happen, when it happens -> error
         return new UserPermissionTable(uuid, new HashMap<>());
     }
 

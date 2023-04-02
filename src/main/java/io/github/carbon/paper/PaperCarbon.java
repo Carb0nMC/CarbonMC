@@ -53,7 +53,9 @@ public class PaperCarbon extends CarbonMC{
 
     @Override
     public UUID getPlayerUUID(String playerName) {
-        return Bukkit.getPlayer(playerName).getUniqueId();
+        Player player = Bukkit.getPlayer(playerName);
+        if(player == null) return null;
+        return player.getUniqueId();
     }
 
     @Override
