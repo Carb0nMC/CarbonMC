@@ -23,7 +23,7 @@ public class SendPlayerToServerTask extends BukkitRunnable {
             SendPlayerToServerTask.playersConnecting.add(player.getName());
             this.player = player;
             this.serverIP = serverIP;
-            this.runTaskTimer(PaperLoader.getInstance(), 20, 20);
+            this.runTaskTimer(PaperLoader.getInstance(), 0, 20);
         }
     }
 
