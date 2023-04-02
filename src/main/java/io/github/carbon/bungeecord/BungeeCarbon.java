@@ -35,7 +35,9 @@ public class BungeeCarbon extends CarbonMC {
 
     @Override
     public UUID getPlayerUUID(String playerName) {
-        return proxy.getPlayer(playerName).getUniqueId();
+        ProxiedPlayer player = proxy.getPlayer(playerName);
+        if(player == null) return null;
+        return player.getUniqueId();
     }
 
     @Override
