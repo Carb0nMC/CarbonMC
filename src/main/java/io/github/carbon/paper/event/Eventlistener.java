@@ -47,7 +47,7 @@ public class Eventlistener implements Listener {
     public void onBlockBreak(BlockBreakEvent event){
         Player player = event.getPlayer();
 
-        if(CarbonMC.get().getServerType() == ServerType.LOBBY && !player.hasPermission("carbon.lobby.break")){
+        if((CarbonMC.get().getServerType() == ServerType.LOBBY || CarbonMC.get().getServerType() == ServerType.GAME_LOBBY) && !player.hasPermission("carbon.lobby.break")){
             String value = CarbonMC.get().getDatabaseUtil().getMessage(Messages.DENY_BLOCK_BREAK).getValue();
             player.sendMessage(CarbonMC.PREFIX + value);
             event.setCancelled(true);
@@ -58,7 +58,7 @@ public class Eventlistener implements Listener {
     public void onBlockPlace(BlockPlaceEvent event){
         Player player = event.getPlayer();
 
-        if(CarbonMC.get().getServerType() == ServerType.LOBBY && !player.hasPermission("carbon.lobby.place")){
+        if((CarbonMC.get().getServerType() == ServerType.LOBBY || CarbonMC.get().getServerType() == ServerType.GAME_LOBBY) && !player.hasPermission("carbon.lobby.place")){
             String value = CarbonMC.get().getDatabaseUtil().getMessage(Messages.DENY_BLOCK_PLACE).getValue();
             player.sendMessage(CarbonMC.PREFIX + value);
             event.setCancelled(true);
