@@ -3,6 +3,7 @@ package io.github.carbon.paper;
 import io.github.carbon.carbonmc.CarbonMC;
 import io.github.carbon.carbonmc.plugin.PaperLoader;
 import io.github.carbon.carbonmc.utils.ServerStartupUtil;
+import io.github.carbon.carbonmc.utils.ServerType;
 import io.github.carbon.paper.menu.MenuManager;
 import io.github.carbon.paper.scoreboard.MainLobbyScoreboard;
 import io.github.carbon.paper.tablist.TablistManager;
@@ -34,7 +35,9 @@ public class PaperCarbon extends CarbonMC{
         this.tablistManager = new TablistManager();
         this.menuManager = new MenuManager();
         Bukkit.getOnlinePlayers().forEach(player -> {
-            new MainLobbyScoreboard(player);
+            if(this.getServerType() == ServerType.LOBBY) {
+                new MainLobbyScoreboard(player);
+            }
             tablistManager.setTablist(player);
             tablistManager.setAllPlayersTeams();
         });

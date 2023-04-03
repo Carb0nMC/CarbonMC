@@ -9,6 +9,7 @@ import io.github.carbon.paper.PaperCarbon;
 import io.github.carbon.paper.scoreboard.MainLobbyScoreboard;
 import io.github.carbon.paper.task.DailyLoginTask;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -26,6 +27,13 @@ public class Eventlistener implements Listener {
         event.joinMessage(Component.empty());
         CarbonMC.get().getDatabaseUtil().updatePermissions(event.getPlayer().getUniqueId());
 
+        if(CarbonMC.get().getServerType() == ServerType.GAME_LOBBY){
+            Location spawnLocation = LobbyUtil.getLobbySpawnLocation();
+            spawnLocation.setWorld(Bukkit.getWorld("world"));
+            event.getPlayer().teleport(spawnLocation);
+            System.out.println("Teleporting " + player.getName());
+        }
+
         if(CarbonMC.get().getServerType() == ServerType.LOBBY){
             Location lobbySpawnLocation = LobbyUtil.getLobbySpawnLocation();
             event.getPlayer().teleport(lobbySpawnLocation);
@@ -36,11 +44,12 @@ public class Eventlistener implements Listener {
 
             new MainLobbyScoreboard(player);
 
-            ((PaperCarbon) PaperCarbon.get()).getTablistManager().setTablist(player);
-            ((PaperCarbon) PaperCarbon.get()).getTablistManager().setAllPlayersTeams();
-
             new DailyLoginTask(player).runTaskLater(PaperLoader.getInstance(), 20 * 3);
         }
+
+        ((PaperCarbon) PaperCarbon.get()).getTablistManager().setTablist(player);
+        ((PaperCarbon) PaperCarbon.get()).getTablistManager().setAllPlayersTeams();
+
     }
 
     @EventHandler
